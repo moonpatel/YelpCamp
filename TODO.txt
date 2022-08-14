@@ -1,11 +1,11 @@
-1. SEEDING CAMPGROUNDS:
+x 1. SEEDING CAMPGROUNDS:
     seed data into your database. Data is available in the seeds/ directory.
 
-2. CAMPGROUND INDEX:
-    add a /campgrounds express and respond with a list of all the campgrounds.
+x 2. CAMPGROUND INDEX:
+    add a /campgrounds express router and respond with a list of all the campgrounds.
     Make a template in /views/campgrounds/index.ejs for displaying campgrounds.
 
-3. CAMPGROUND SHOW
+x 3. CAMPGROUND SHOW
     add the feature to show any campground on a differemt page.
 
 4. CAMPGROUND NEW & CREATE

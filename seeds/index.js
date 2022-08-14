@@ -1,3 +1,6 @@
+// This file seeds test data obtained from cities.js and seedHelpers.js into the database 
+// This file is not a part of the web application it is just for testing purposes
+
 // including required packages
 const mongoose = require('mongoose')
 
@@ -25,7 +28,7 @@ const seedDB = async () => {
         // create an instance of a campground
         const cg = new Campground({
             location: `${cities[randomNum].city}, ${cities[randomNum].state}`,
-            title: `${sample(descriptors)} ${sample(places)}}`
+            title: `${sample(descriptors)} ${sample(places)}`
         })
         // save it to database
         await cg.save()
