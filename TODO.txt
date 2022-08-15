@@ -8,9 +8,8 @@ x 2. CAMPGROUND INDEX:
 x 3. CAMPGROUND SHOW
     add the feature to show any campground on a differemt page.
 
-4. CAMPGROUND NEW & CREATE
+x 4. CAMPGROUND NEW & CREATE
     add a form to create a new campground. also add that campground to the databse and show the 
     campground on campgrounds page.
 
-5. CAMPGROUND EDIT & UPDATE
-    
+x 5. CAMPGROUND EDIT & UPDATE

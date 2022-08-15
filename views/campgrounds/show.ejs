@@ -17,6 +17,13 @@
         <br>
         Location: <%= c.location %>
     </p>
+    <p>
+        <a href="/campgrounds">Back</a>
+        <a href="/campgrounds/<%= c._id %>/edit">Edit campground</a>
+        <form action="/campgrounds/<%= c._id %>?_method=DELETE" method="post">
+            <button>Delete Campground</button>
+        </form>
+    </p>
 </body>
 
 </html>
