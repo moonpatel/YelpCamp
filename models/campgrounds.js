@@ -6,8 +6,9 @@ const Schema = mongoose.Schema
 const campgroundSchema = new Schema({
     title: String,
     location: String,
-    price: String,
-    description: String
+    description: String,
+    price: Number,
+    image: String
 })
 
 // create a model out of campgroundSchema
