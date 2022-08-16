@@ -1,9 +1,34 @@
 <% layout('layouts/boilerplate.ejs') %>
-
-
-    <h1>Edit campground</h1>
-    <form action="/campgrounds/<%= cg._id %>?_method=PUT" method="post">
-        <input type="text" name="campground[title]" value="<%=cg.title%>" placeholder="Title">
-        <input type="text" name="campground[location]" value="<%=cg.location%>" placeholder="Location">
-        <button>Edit campground</button>
-    </form>
+    <div class="row">
+        <h1 class="text-center">Edit Campground</h1>
+        <div class="col-6 offset-3">
+            <form action="/campgrounds/<%= cg._id %>?_method=PUT" method="post">
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input class="form-control" type="text" name="campground[title]" id="title" value="<%=cg.title%>">
+                </div>
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location</label>
+                    <input class="form-control" type="text" name="campground[location]" id="location"
+                        value="<%=cg.location%>">
+                </div>
+                <div class="mb-3">
+                    <label for="img-url" class="form-label">Image URL</label>
+                    <input class="form-control" type="text" name="campground[image]" id="img-url" value="<%=cg.image%>">
+                </div>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price</label>
+                    <input class="form-control" type="text" name="campground[image]" id="price" placeholder="0"
+                        value="<%=cg.price%>">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" type="text" name="campground[description]" id="description"
+                        value="<%=cg.title%>"><%= cg.description %></textarea>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-success">Edit</button>
+                </div>
+            </form>
+        </div>
+    </div>

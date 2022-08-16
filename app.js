@@ -51,6 +51,7 @@ app.post('/campgrounds', async (req,res) => {
 // show individual campground
 app.get('/campgrounds/:id', async (req,res) => {
     const c = await Campground.findOne({_id: req.params.id})
+    console.log(c,req.params.id)
     res.render('campgrounds/show',{c})
 })
 // render form to edit a campground
