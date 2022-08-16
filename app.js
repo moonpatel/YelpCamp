@@ -2,6 +2,7 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
+const ejsMate = require('ejs-mate')
 const path = require('path')
 // require models
 const Campground = require('./models/campgrounds')
@@ -19,6 +20,7 @@ db.once("open", () => console.log("Database connected"))
 // create an express application object
 const app = express()
 
+app.engine('ejs',ejsMate)
 // set parameters for rendering templates
 app.set('view engine','ejs')
 app.set('views',path.join(__dirname,'views'))
