@@ -26,21 +26,20 @@ app.set('views',path.join(__dirname,'views'))
 app.use(express.urlencoded({extended : true}))
 app.use(methodOverride('_method'))
 
+
+
 // RECEIVE REQUESTS
 // main page
 app.get('/',(req,res) => {
     res.render('home')
 })
-
 // campgrounds index
 app.get('/campgrounds', async (req,res) => {
     const camps = await Campground.find({})
     res.render('campgrounds/index', {camps})
 })
 // add new campgrounds
-app.get('/campgrounds/new', (req,res) => {
-    res.render('new')
-})
+app.get('/campgrounds/new', (req,res) => res.render('new'))
 // add new campground to server
 app.post('/campgrounds', async (req,res) => {
     const cg = new Campground(req.body.campground)
@@ -68,7 +67,8 @@ app.delete('/campgrounds/:id', async (req,res) => {
     await Campground.findByIdAndDelete(req.params.id)
     res.redirect('/campgrounds')
 })
+
+
+
 // listen for incoming requests
-app.listen(port, () => {
-    console.log(`LISTENING ON PORT ${port}`)
-})
+app.listen(port,() => console.log(`LISTENING ON PORT ${port}`))
