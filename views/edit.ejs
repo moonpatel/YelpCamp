@@ -2,29 +2,41 @@
     <div class="row">
         <h1 class="text-center">Edit Campground</h1>
         <div class="col-6 offset-3">
-            <form action="/campgrounds/<%= cg._id %>?_method=PUT" method="post">
+            <form action="/campgrounds/<%= cg._id %>?_method=PUT" method="post" novalidate class="validated-form">
                 <div class="mb-3">
                     <label for="title" class="form-label">Title</label>
-                    <input class="form-control" type="text" name="campground[title]" id="title" value="<%=cg.title%>">
+                    <input class="form-control" type="text" name="campground[title]" id="title" value="<%=cg.title%>"
+                        required>
+                    <div class="valid-feedback">Looks Good!</div>
+                    <div class="invalid-feedback">Looks bad!</div>
                 </div>
                 <div class="mb-3">
                     <label for="location" class="form-label">Location</label>
                     <input class="form-control" type="text" name="campground[location]" id="location"
-                        value="<%=cg.location%>">
+                        value="<%=cg.location%>" required>
+                    <div class="valid-feedback">Looks Good!</div>
+                    <div class="invalid-feedback">Looks bad!</div>
                 </div>
                 <div class="mb-3">
                     <label for="img-url" class="form-label">Image URL</label>
-                    <input class="form-control" type="text" name="campground[image]" id="img-url" value="<%=cg.image%>">
+                    <input class="form-control" type="text" name="campground[image]" id="img-url" value="<%=cg.image%>"
+                        required>
+                    <div class="valid-feedback">Looks Good!</div>
+                    <div class="invalid-feedback">Looks bad!</div>
                 </div>
                 <div class="mb-3">
                     <label for="price" class="form-label">Price</label>
                     <input class="form-control" type="text" name="campground[image]" id="price" placeholder="0"
-                        value="<%=cg.price%>">
+                        value="<%=cg.price%>" required>
+                    <div class="valid-feedback">Looks Good!</div>
+                    <div class="invalid-feedback">Looks bad!</div>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
                     <textarea class="form-control" type="text" name="campground[description]" id="description"
-                        value="<%=cg.title%>"><%= cg.description %></textarea>
+                        value="<%=cg.title%>" required><%= cg.description %></textarea>
+                    <div class="valid-feedback">Looks Good!</div>
+                    <div class="invalid-feedback">Looks bad!</div>
                 </div>
                 <div class="mb-3">
                     <button class="btn btn-success">Edit</button>
