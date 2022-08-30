@@ -8,8 +8,9 @@ const catchAsync = require('./utils/catchAsync')
 const ExpressError = require('./utils/ExpressError')
 // require models
 const Campground = require('./models/campgrounds')
+const Review = require('./models/reviews')
 const { campgroundSchema } = require('./schemas')
-const joi = require('joi')
+const { reviewSchema } = require('./schemas')
 // port number to listen for requests
 const port = 3000
 
@@ -19,7 +20,7 @@ mongoose.connect('mongodb://localhost:27017/yelpcamp')
 // check the status of database connection
 const db = mongoose.connection
 db.on("error", console.error.bind(console, "connection error"))
-db.once("open", () => console.log("Database connected"))
+db.once("open", () => console.log("Connected to MongoDB"))
 
 // create an express application object
 const app = express()
@@ -37,7 +38,16 @@ const validateCampground = (req, res, next) => {
     const { error } = campgroundSchema.validate(req.body.campground)
     if (error) {
         const msg = error.details.map(el => el.message).join(',')
-        next(new ExpressError(msg, 400))
+        throw new ExpressError(msg, 400)
+    }
+    else next()
+}
+// validate reviews object
+const validateReview = (req, res, next) => {
+    const { error } = reviewSchema.validate(req.body.review)
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
     }
     else next()
 }
@@ -60,9 +70,24 @@ app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) =
     await cg.save()
     res.redirect(`/campgrounds/${cg._id}`)
 }))
+// add review to server
+app.post('/campgrounds/:id/reviews', validateReview, catchAsync(async (req, res) => {
+    const campground = await Campground.findById(req.params.id)
+    const review = new Review(req.body.review)
+    campground.reviews.push(review)
+    await campground.save()
+    await review.save()
+    res.redirect(`/campgrounds/${req.params.id}`)
+}))
+app.delete('/campgrounds/:id/reviews/:reviewId',catchAsync(async (req,res,next) => {
+    const {id,reviewId} = req.params
+    await Review.findByIdAndDelete(reviewId)
+    await Campground.findByIdAndUpdate(id, {$pull: {reviews: reviewId}})
+    res.redirect(`/campgrounds/${id}`)
+}))
 // show individual campground
 app.get('/campgrounds/:id', catchAsync(async (req, res) => {
-    const c = await Campground.findOne({ _id: req.params.id })
+    const c = await Campground.findOne({ _id: req.params.id }).populate('reviews')
     res.render('campgrounds/show', { c })
 }))
 // render form to edit a campground
@@ -81,19 +106,15 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
     await Campground.findByIdAndDelete(req.params.id)
     res.redirect('/campgrounds')
 }))
-
-
 // if page unavailable
 app.all('*', (req, res, next) => {
     next(new ExpressError('Page not found', 404))
 })
-
 // error handler
 app.use((err, req, res, next) => {
     const { message = 'Something went wrong', statusCode = 500 } = err
     console.log(err)
     res.status(statusCode).render('error', { err })
 })
-
 // listen for incoming requests
 app.listen(port, () => console.log(`LISTENING ON PORT ${port}`))
