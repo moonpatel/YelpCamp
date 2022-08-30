@@ -8,6 +8,7 @@ const catchAsync = require('./utils/catchAsync')
 const ExpressError = require('./utils/ExpressError')
 // require models
 const Campground = require('./models/campgrounds')
+const { campgroundSchema } = require('./schemas')
 const joi = require('joi')
 // port number to listen for requests
 const port = 3000
@@ -31,14 +32,8 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
+// validate campground object
 const validateCampground = (req, res, next) => {
-    const campgroundSchema = joi.object({
-        title: joi.string().required(),
-        price: joi.number().required().min(0),
-        location: joi.string().required(),
-        description: joi.string().required(),
-        image: joi.string().required()
-    }).required()
     const { error } = campgroundSchema.validate(req.body.campground)
     if (error) {
         const msg = error.details.map(el => el.message).join(',')
@@ -76,7 +71,7 @@ app.get('/campgrounds/:id/edit', catchAsync(async (req, res) => {
     res.render('edit', { cg })
 }))
 // send put request to save changes
-app.put('/campgrounds/:id',validateCampground, catchAsync(async (req, res) => {
+app.put('/campgrounds/:id', validateCampground, catchAsync(async (req, res) => {
     const { title, location } = req.body.campground
     await Campground.updateOne({ _id: req.params.id }, { title: title, location: location })
     res.redirect(`/campgrounds/${req.params.id}`)
