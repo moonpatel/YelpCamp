@@ -8,7 +8,13 @@ const campgroundSchema = new Schema({
     location: String,
     description: String,
     price: Number,
-    image: String
+    image: String,
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Review'
+        }
+    ]
 })
 
 // create a model out of campgroundSchema

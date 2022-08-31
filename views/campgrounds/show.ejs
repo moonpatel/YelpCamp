@@ -1,27 +1,66 @@
 <% layout('layouts/boilerplate.ejs') %>
     <div class="row">
-        <div class="card px-0 mb-3">
-            <img src="<%= c.image %>/900x600" alt="campground" class="card-img-top">
-            <div class="card-body">
-                <h5 class="card-title mb-0">
-                    <%= c.title %>
-                </h5>
-                <small class="text-muted">
-                    <%=c.location%>
-                </small>
-                <p class="card-text mt-3">
-                    <%=c.description%>
-                </p>
+        <div class="col-6">
+            <div class="card px-0 mb-3">
+                <img src="<%= c.image %>/900x600" alt="campground" class="card-img-top">
+                <div class="card-body">
+                    <h5 class="card-title mb-0">
+                        <%= c.title %>
+                    </h5>
+                    <small class="text-muted">
+                        <%=c.location%>
+                    </small>
+                    <p class="card-text mt-3">
+                        <%=c.description%>
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">$<%=c.price%>/night</li>
+                </ul>
+                <div class="card-body">
+                    <a class="btn btn-primary" href="/campgrounds/<%= c._id %>/edit">Edit</a>
+                    <form action="/campgrounds/<%= c._id %>?_method=DELETE" method="post" class="mt-2 d-inline">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+
             </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">$<%=c.price%>/night</li>
-            </ul>
-            <div class="card-body">
-                <!-- <a class="btn btn-primary" href="/campgrounds">Back</a> -->
-                <a class="btn btn-primary" href="/campgrounds/<%= c._id %>/edit">Edit</a>
-                <form action="/campgrounds/<%= c._id %>?_method=DELETE" method="post" class="mt-2 d-inline">
-                    <button class="btn btn-danger">Delete</button>
+        </div>
+        <div class="col-6">
+            <div>
+                <h2>Leave a Review</h2>
+                <form action="/campgrounds/<%= c._id %>/reviews" method="post" class="mb-3 validated-form" novalidate>
+                    <div class="mb-3">
+                        <label class="form-label" for="rating">Rating</label>
+                        <input class="form-range" type="range" min="1" max="5" name="review[rating]" id="rating"
+                            value="0" required>
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">Looks bad!</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="body">Review</label>
+                        <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" value=""
+                            required></textarea>
+                        <div class="valid-feedback">Looks good!</div>
+                        <div class="invalid-feedback">Looks bad!</div>
+                    </div>
+                    <button class="btn btn-success">Submit</button>
                 </form>
+                <%for(let review of c.reviews) {%>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title mb-0">
+                                Rating: <%= review.rating %>
+                            </h5>
+                            <p class="card-text mt-3">
+                                <%= review.body %>
+                            </p>
+                            <form action="/campgrounds/<%=c._id%>/reviews/<%=review._id%>?_method=DELETE" method="post">
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                    <%}%>
             </div>
         </div>
     </div>
