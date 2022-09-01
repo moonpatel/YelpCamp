@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const flash = require('connect-flash')
 const catchAsync = require('../utils/catchAsync')
 const { campgroundSchema } = require('../schemas')
 
@@ -28,28 +29,39 @@ router.get('/new', (req, res) => res.render('new'))
 router.post('/', validateCampground, catchAsync(async (req, res, next) => {
     const cg = new Campground(req.body.campground)
     await cg.save()
+    req.flash('success', `Successfully made a new campground - ${cg.title}`)
     res.redirect(`/campgrounds/${cg._id}`)
 }))
 
 // show individual campground
 router.get('/:id', catchAsync(async (req, res) => {
     const c = await Campground.findOne({ _id: req.params.id }).populate('reviews')
+    if (!c) {
+        req.flash('error', 'Cannot find that campground')
+        return res.redirect('/campgrounds')
+    }
     res.render('campgrounds/show', { c })
 }))
 // render form to edit a campground
 router.get('/:id/edit', catchAsync(async (req, res) => {
     const cg = await Campground.findById(req.params.id)
+    if (!cg) {
+        req.flash('error', 'Cannot find that campground')
+        return res.redirect('/campgrounds')
+    }
     res.render('edit', { cg })
 }))
 // send put request to save changes
 router.put('/:id', validateCampground, catchAsync(async (req, res) => {
     const { title, location } = req.body.campground
     await Campground.updateOne({ _id: req.params.id }, { title: title, location: location })
+    req.flash('success', `Successfully updated ${title}`)
     res.redirect(`/campgrounds/${req.params.id}`)
 }))
 // delete campground
 router.delete('/:id', catchAsync(async (req, res) => {
-    await Campground.findByIdAndDelete(req.params.id)
+    const campground = await Campground.findByIdAndDelete(req.params.id)
+    req.flash('success', `Successfully deleted ${campground.title}`)
     res.redirect('/campgrounds')
 }))
 
